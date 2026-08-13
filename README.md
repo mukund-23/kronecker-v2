@@ -273,7 +273,7 @@ A 20× parameter saving that costs 79× decode latency is not an unqualified win
 1. **The Kronecker codec is invertible in closed form.** z-normalisation is affine with `L`-dependent constants; per-slot argmax is invariant to it; the problem reduces to length recovery. 100% exact on the full GPT-2 vocabulary at `d_model ≥ 768`.
 2. **The recovery boundary scales with mean byte length, not codec dimension.** `d_model* = 384` at `d_p ∈ {16, 32, 64}` — `D` quadruples, the boundary is unchanged.
 3. **Trained projections preserve recovery above ~2.7× margin.** Training consumes headroom rather than destroying invertibility. Stable rank converges to ~21 regardless of starting width; condition number does not detect this.
-4. **Kronecker V1's byte extraction has two defects** — UTF-8 fragment collapse on byte-level BPE (255 GPT-2 tokens sharing one embedding) and SentencePiece whitespace mishandling (41,452 Sarvam tokens). Neither is detectable by a forward-only codec.
+4. **Kronecker V1's byte extraction has two issues** — UTF-8 fragment collapse on byte-level BPE (255 GPT-2 tokens sharing one embedding) and SentencePiece whitespace mishandling (41,452 Sarvam tokens). Neither is detectable by a forward-only codec.
 5. **`d_p=16` is unsafe for Indic scripts.** 21.48% Sarvam collisions vs 0.09% for GPT-2; 31% of the Sarvam vocabulary truncated. `d_p=32` resolves it.
 6. **A byte-level output head requires an autoregressive factorisation over positions.** Breaking slot independence is worth 1.28 bpb; three parallel alternatives recover under 1%.
 7. **That requirement carries a 79× decode-latency cost.** Vocabulary-independence is a tradeoff, not a free saving.
