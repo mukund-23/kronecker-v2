@@ -1,0 +1,717 @@
+{
+  "d_p": 16,
+  "seed": 1337,
+  "rows": [
+    {
+      "d_model": 128,
+      "noise": 0.0,
+      "n": 24,
+      "byte_acc": 74.25,
+      "L_acc": 66.67,
+      "exact": 37.5,
+      "failures": [
+        {
+          "probe": "cat",
+          "true_L": 3,
+          "pred_L": 3,
+          "decoded": "\ufffdat"
+        },
+        {
+          "probe": "cats",
+          "true_L": 4,
+          "pred_L": 4,
+          "decoded": ">ats"
+        },
+        {
+          "probe": "separate",
+          "true_L": 8,
+          "pred_L": 7,
+          "decoded": "s\ufffdparat"
+        },
+        {
+          "probe": "seperate",
+          "true_L": 8,
+          "pred_L": 7,
+          "decoded": "seperat"
+        },
+        {
+          "probe": "commute",
+          "true_L": 7,
+          "pred_L": 7,
+          "decoded": "9ommute"
+        },
+        {
+          "probe": "decode",
+          "true_L": 6,
+          "pred_L": 6,
+          "decoded": "]ecode"
+        },
+        {
+          "probe": "kubernetes",
+          "true_L": 10,
+          "pred_L": 16,
+          "decoded": "ku\u0013e\ufffdwe\ufffde\ufffd\u0017\b\ufffd\u0397\ufffd"
+        },
+        {
+          "probe": "tensorflow",
+          "true_L": 10,
+          "pred_L": 10,
+          "decoded": "teJsoMf\ufffdow"
+        },
+        {
+          "probe": "getUserById",
+          "true_L": 11,
+          "pred_L": 10,
+          "decoded": "g[tSserByI"
+        },
+        {
+          "probe": " transformer",
+          "true_L": 12,
+          "pred_L": 16,
+          "decoded": "\u000btYa\ufffds\ufffdo\ufffd\u0002er\ufffd\ufffd\u0002Y"
+        },
+        {
+          "probe": "rizzler",
+          "true_L": 7,
+          "pred_L": 7,
+          "decoded": "\ufffdizzler"
+        },
+        {
+          "probe": "xylophone",
+          "true_L": 9,
+          "pred_L": 9,
+          "decoded": "\ufffdylophone"
+        }
+      ]
+    },
+    {
+      "d_model": 128,
+      "noise": 0.1,
+      "n": 120,
+      "byte_acc": 84.67,
+      "L_acc": 84.17,
+      "exact": 62.5,
+      "failures": [
+        {
+          "probe": "compute",
+          "true_L": 7,
+          "pred_L": 7,
+          "decoded": "compVte"
+        },
+        {
+          "probe": "commute",
+          "true_L": 7,
+          "pred_L": 7,
+          "decoded": "commVte"
+        },
+        {
+          "probe": "decode",
+          "true_L": 6,
+          "pred_L": 9,
+          "decoded": "de\rode\ufffdk\ufffd"
+        },
+        {
+          "probe": "kubernetes",
+          "true_L": 10,
+          "pred_L": 13,
+          "decoded": "ku\\erne\ufffde\ufffdV\ufffd4"
+        },
+        {
+          "probe": "tensorflow",
+          "true_L": 10,
+          "pred_L": 10,
+          "decoded": "tensorfl\ufffdw"
+        },
+        {
+          "probe": "getUserById",
+          "true_L": 11,
+          "pred_L": 16,
+          "decoded": "getUs\ufffd\ufffd\ufffdyI\ufffdX\ufffd\\\ufffd\u0011"
+        },
+        {
+          "probe": " transformer",
+          "true_L": 12,
+          "pred_L": 12,
+          "decoded": " tran\ufffdfo\ufffdmer"
+        },
+        {
+          "probe": "\u0928\u092e\u0938\u094d\u0924\u0947",
+          "true_L": 15,
+          "pred_L": 16,
+          "decoded": "\ufffdV\n\u092e\ufffd%X\ufffd\ufffd\u0924\ufffd"
+        },
+        {
+          "probe": "\u0927\u0928\u094d\u092f\u0935\u093e\u0926",
+          "true_L": 15,
+          "pred_L": 15,
+          "decoded": "\ufffd\ufffd\ufffd\ufffd\u0002R\ufffd\u0002\u0913\ufffd\ufffd\ufffd"
+        },
+        {
+          "probe": "compute",
+          "true_L": 7,
+          "pred_L": 7,
+          "decoded": "compVte"
+        },
+        {
+          "probe": "commute",
+          "true_L": 7,
+          "pred_L": 7,
+          "decoded": "comm\ufffdte"
+        },
+        {
+          "probe": "decode",
+          "true_L": 6,
+          "pred_L": 16,
+          "decoded": "de\ro\ufffde\ufffdk\ufffd\ufffd\ufffd^\u001dd\ufffd\ufffd"
+        }
+      ]
+    },
+    {
+      "d_model": 128,
+      "noise": 0.25,
+      "n": 120,
+      "byte_acc": 78.08,
+      "L_acc": 70.83,
+      "exact": 59.17,
+      "failures": [
+        {
+          "probe": "separate",
+          "true_L": 8,
+          "pred_L": 8,
+          "decoded": "separa)e"
+        },
+        {
+          "probe": "seperate",
+          "true_L": 8,
+          "pred_L": 8,
+          "decoded": "se9erate"
+        },
+        {
+          "probe": "compute",
+          "true_L": 7,
+          "pred_L": 7,
+          "decoded": "c\u001cmpute"
+        },
+        {
+          "probe": "kubernetes",
+          "true_L": 10,
+          "pred_L": 15,
+          "decoded": "kub\ufffdrn\ufffdtXs-\ufffd\ufffd\ufffd"
+        },
+        {
+          "probe": "tensorflow",
+          "true_L": 10,
+          "pred_L": 16,
+          "decoded": "\fensor\ufffdto\ufffd\u06d14-CM"
+        },
+        {
+          "probe": "getUserById",
+          "true_L": 11,
+          "pred_L": 16,
+          "decoded": "g:tU\u0001es\ufffdy\ufffddw\ufffd\ufffd\ufffd}"
+        },
+        {
+          "probe": " transformer",
+          "true_L": 12,
+          "pred_L": 16,
+          "decoded": "\u007ftran\u0001\ufffdo\ufffdm\ufffdr\ufffd\ufffdFi"
+        },
+        {
+          "probe": "rizzler",
+          "true_L": 7,
+          "pred_L": 7,
+          "decoded": "ripzler"
+        },
+        {
+          "probe": "xylophone",
+          "true_L": 9,
+          "pred_L": 16,
+          "decoded": "xyloph\ufffd\ufffdb\ufffd\ufffd\ufffd\u0000Y\u0012\ufffd"
+        },
+        {
+          "probe": "\u0928\u092e\u0938\u094d\u0924\u0947",
+          "true_L": 15,
+          "pred_L": 16,
+          "decoded": "\u0928\u092e\ufffd2\ufffd\ufffd\ufffd@\b\ufffd'"
+        },
+        {
+          "probe": "\u0927\u0928\u094d\u092f\u0935\u093e\u0926",
+          "true_L": 15,
+          "pred_L": 16,
+          "decoded": "Q\ufffd\ufffdD\ufffd\ufffd\ufffd\ufffd,{\ufffd\ufffd\ufffd\ufffd\u0016"
+        },
+        {
+          "probe": "separate",
+          "true_L": 8,
+          "pred_L": 8,
+          "decoded": "sep\ufffdra)e"
+        }
+      ]
+    },
+    {
+      "d_model": 128,
+      "noise": 0.5,
+      "n": 120,
+      "byte_acc": 74.97,
+      "L_acc": 62.5,
+      "exact": 50.0,
+      "failures": [
+        {
+          "probe": "separate",
+          "true_L": 8,
+          "pred_L": 8,
+          "decoded": "sep\ufffdrate"
+        },
+        {
+          "probe": "seperate",
+          "true_L": 8,
+          "pred_L": 16,
+          "decoded": "Hepe\ufffdateA\u001b\ufffd\u007f\ufffd\ufffd&\ufffd"
+        },
+        {
+          "probe": "compute",
+          "true_L": 7,
+          "pred_L": 16,
+          "decoded": "6o\u0016pute\ufffd&\ufffdc\ufffdw?\ufffd\ufffd"
+        },
+        {
+          "probe": "commute",
+          "true_L": 7,
+          "pred_L": 16,
+          "decoded": "co\ufffdmuteA\u0000N\u000b\ufffd\ufffd\tQ\ufffd"
+        },
+        {
+          "probe": "kubernetes",
+          "true_L": 10,
+          "pred_L": 15,
+          "decoded": "kubFr\ufffde\ufffd\rsG\ufffd\ufffd\"\ufffd"
+        },
+        {
+          "probe": "tensorflow",
+          "true_L": 10,
+          "pred_L": 12,
+          "decoded": "tenso\b\ufffd\ufffdowm\u0011"
+        },
+        {
+          "probe": "getUserById",
+          "true_L": 11,
+          "pred_L": 12,
+          "decoded": "O\u0019\u0005User\ty\ufffd\ufffdn"
+        },
+        {
+          "probe": "SWIFT",
+          "true_L": 5,
+          "pred_L": 5,
+          "decoded": "S\u001bIFT"
+        },
+        {
+          "probe": "zebra",
+          "true_L": 5,
+          "pred_L": 16,
+          "decoded": "ze\ufffdra\u0014O\u000bTw\ufffd\ufffd\ufffdB\ufffd\u0013"
+        },
+        {
+          "probe": " transformer",
+          "true_L": 12,
+          "pred_L": 16,
+          "decoded": "Qtrn sfLrme\ufffd\ufffd\ufffdWC"
+        },
+        {
+          "probe": "xylophone",
+          "true_L": 9,
+          "pred_L": 16,
+          "decoded": "xwlopho\ufffd\t\ufffd\ufffdw\ufffd\ufffd\u0005&"
+        },
+        {
+          "probe": "\u0928\u092e\u0938\u094d\u0924\u0947",
+          "true_L": 15,
+          "pred_L": 15,
+          "decoded": "\u0928\u02e4\ufffd\ufffd\ufffd\u0004\ufffd\u0018\ufffd'\ufffd"
+        }
+      ]
+    },
+    {
+      "d_model": 256,
+      "noise": 0.0,
+      "n": 24,
+      "byte_acc": 98.2,
+      "L_acc": 100.0,
+      "exact": 91.67,
+      "failures": [
+        {
+          "probe": "\u0928\u092e\u0938\u094d\u0924\u0947",
+          "true_L": 15,
+          "pred_L": 15,
+          "decoded": "\ufffd\ufffd9\ufffd\ufffd\u0938\u094d\u0924"
+        },
+        {
+          "probe": "\u0927\u0928\u094d\u092f\u0935\u093e\u0926",
+          "true_L": 15,
+          "pred_L": 15,
+          "decoded": "\u0927\u0928\u094dU\ufffd\ufffd\u0935"
+        }
+      ]
+    },
+    {
+      "d_model": 256,
+      "noise": 0.1,
+      "n": 120,
+      "byte_acc": 95.81,
+      "L_acc": 94.17,
+      "exact": 87.5,
+      "failures": [
+        {
+          "probe": "getUserById",
+          "true_L": 11,
+          "pred_L": 10,
+          "decoded": "getUserByI"
+        },
+        {
+          "probe": "\u0928\u092e\u0938\u094d\u0924\u0947",
+          "true_L": 15,
+          "pred_L": 15,
+          "decoded": "\u0928\u092e\ufffd\ufffd\ufffd\ufffd\u0924"
+        },
+        {
+          "probe": "\u0927\u0928\u094d\u092f\u0935\u093e\u0926",
+          "true_L": 15,
+          "pred_L": 15,
+          "decoded": "\u0914[\ufffd|\u094d\u092f\u000b\ufffd\ufffd"
+        },
+        {
+          "probe": "getUserById",
+          "true_L": 11,
+          "pred_L": 10,
+          "decoded": "getUserByI"
+        },
+        {
+          "probe": "\u0928\u092e\u0938\u094d\u0924\u0947",
+          "true_L": 15,
+          "pred_L": 15,
+          "decoded": "\u0928\u092e\ufffd\u000b\ufffd\ufffd\ufffd\u0924"
+        },
+        {
+          "probe": "\u0927\u0928\u094d\u092f\u0935\u093e\u0926",
+          "true_L": 15,
+          "pred_L": 14,
+          "decoded": "\u0914\ufffd|\u094d\u092f\u000b\ufffd"
+        },
+        {
+          "probe": "getUserById",
+          "true_L": 11,
+          "pred_L": 10,
+          "decoded": "getUserByI"
+        },
+        {
+          "probe": "\u0928\u092e\u0938\u094d\u0924\u0947",
+          "true_L": 15,
+          "pred_L": 15,
+          "decoded": "\u0928\u092e\ufffd\ufffd\ufffd\u0013\u0924"
+        },
+        {
+          "probe": "\u0927\u0928\u094d\u092f\u0935\u093e\u0926",
+          "true_L": 15,
+          "pred_L": 14,
+          "decoded": "\u0914\ufffd|\u094d\u092f\u000b\ufffd"
+        },
+        {
+          "probe": "getUserById",
+          "true_L": 11,
+          "pred_L": 10,
+          "decoded": "getUserByI"
+        },
+        {
+          "probe": "\u0928\u092e\u0938\u094d\u0924\u0947",
+          "true_L": 15,
+          "pred_L": 15,
+          "decoded": "\u0928\u092e\ufffd\ufffd\ufffd\ufffd\u0924"
+        },
+        {
+          "probe": "\u0927\u0928\u094d\u092f\u0935\u093e\u0926",
+          "true_L": 15,
+          "pred_L": 15,
+          "decoded": "\u0914\ufffd|\u094d\u092f\u000b\ufffd\ufffd"
+        }
+      ]
+    },
+    {
+      "d_model": 256,
+      "noise": 0.25,
+      "n": 120,
+      "byte_acc": 95.57,
+      "L_acc": 96.67,
+      "exact": 84.17,
+      "failures": [
+        {
+          "probe": "compute",
+          "true_L": 7,
+          "pred_L": 7,
+          "decoded": "c\ufffdmpute"
+        },
+        {
+          "probe": "xylophone",
+          "true_L": 9,
+          "pred_L": 9,
+          "decoded": "$ylophone"
+        },
+        {
+          "probe": "\u0928\u092e\u0938\u094d\u0924\u0947",
+          "true_L": 15,
+          "pred_L": 14,
+          "decoded": "\u0e28\u092e\u0938\ufffd=\ufffd\ufffd"
+        },
+        {
+          "probe": "\u0927\u0928\u094d\u092f\u0935\u093e\u0926",
+          "true_L": 15,
+          "pred_L": 14,
+          "decoded": "\u0927\u02a4\ufffd\u0011\ufffd\ufffd\u092b\ufffd"
+        },
+        {
+          "probe": " transformer",
+          "true_L": 12,
+          "pred_L": 12,
+          "decoded": " t\ufffdansformer"
+        },
+        {
+          "probe": "xylophone",
+          "true_L": 9,
+          "pred_L": 9,
+          "decoded": "$ylophone"
+        },
+        {
+          "probe": "\u0928\u092e\u0938\u094d\u0924\u0947",
+          "true_L": 15,
+          "pred_L": 14,
+          "decoded": "\u0e28\u092e\u0938\ufffd=\ufffd\ufffd"
+        },
+        {
+          "probe": "\u0927\u0928\u094d\u092f\u0935\u093e\u0926",
+          "true_L": 15,
+          "pred_L": 15,
+          "decoded": "\ufffdE\ufffd\u02a4\ufffd\u0011\ufffd\ufffd\u092f\u0935"
+        },
+        {
+          "probe": " transformer",
+          "true_L": 12,
+          "pred_L": 12,
+          "decoded": " t\ufffdansformer"
+        },
+        {
+          "probe": "xylophone",
+          "true_L": 9,
+          "pred_L": 9,
+          "decoded": "$ylophone"
+        },
+        {
+          "probe": "\u0928\u092e\u0938\u094d\u0924\u0947",
+          "true_L": 15,
+          "pred_L": 15,
+          "decoded": "\u0e28\u092e\u0938\u094d\u0924"
+        },
+        {
+          "probe": "\u0927\u0928\u094d\u092f\u0935\u093e\u0926",
+          "true_L": 15,
+          "pred_L": 15,
+          "decoded": "\ufffdE\ufffd\u0014\ufffd\ufffd\u0011\ufffd\ufffd\ufffdh\u0935"
+        }
+      ]
+    },
+    {
+      "d_model": 256,
+      "noise": 0.5,
+      "n": 120,
+      "byte_acc": 94.73,
+      "L_acc": 94.17,
+      "exact": 78.33,
+      "failures": [
+        {
+          "probe": "seperate",
+          "true_L": 8,
+          "pred_L": 8,
+          "decoded": "seperaHe"
+        },
+        {
+          "probe": "kubernetes",
+          "true_L": 10,
+          "pred_L": 10,
+          "decoded": "kub\u0010rnetes"
+        },
+        {
+          "probe": "tensorflow",
+          "true_L": 10,
+          "pred_L": 10,
+          "decoded": "tensorf!ow"
+        },
+        {
+          "probe": "getUserById",
+          "true_L": 11,
+          "pred_L": 11,
+          "decoded": "getUserryId"
+        },
+        {
+          "probe": " transformer",
+          "true_L": 12,
+          "pred_L": 12,
+          "decoded": " tran\u0019f\ufffdr\ufffder"
+        },
+        {
+          "probe": "\u0928\u092e\u0938\u094d\u0924\u0947",
+          "true_L": 15,
+          "pred_L": 15,
+          "decoded": "\u0928\ufffd\ufffd\u0938\u094d\ufffdA\ufffd"
+        },
+        {
+          "probe": "\u0927\u0928\u094d\u092f\u0935\u093e\u0926",
+          "true_L": 15,
+          "pred_L": 15,
+          "decoded": "\u0927\u0928\u094d\ufffd\u0007_\ufffd\ufffd"
+        },
+        {
+          "probe": "getUserById",
+          "true_L": 11,
+          "pred_L": 11,
+          "decoded": "get\ufffdserById"
+        },
+        {
+          "probe": " transformer",
+          "true_L": 12,
+          "pred_L": 13,
+          "decoded": " tra\u0013\ufffdfCr\rer\ufffd"
+        },
+        {
+          "probe": "\u0928\u092e\u0938\u094d\u0924\u0947",
+          "true_L": 15,
+          "pred_L": 16,
+          "decoded": "\u0928-\ufffdB\u0938\u094d\ufffd\u0001\ufffd\ufffd"
+        },
+        {
+          "probe": "\u0927\u0928\u094d\u092f\u0935\u093e\u0926",
+          "true_L": 15,
+          "pred_L": 16,
+          "decoded": "\u0927\u0928\u094d\ufffd\u0015\ufffd\u06b5|"
+        },
+        {
+          "probe": "kubernetes",
+          "true_L": 10,
+          "pred_L": 10,
+          "decoded": "kubernet\ufffds"
+        }
+      ]
+    },
+    {
+      "d_model": 512,
+      "noise": 0.0,
+      "n": 24,
+      "byte_acc": 100.0,
+      "L_acc": 100.0,
+      "exact": 100.0,
+      "failures": []
+    },
+    {
+      "d_model": 512,
+      "noise": 0.1,
+      "n": 120,
+      "byte_acc": 100.0,
+      "L_acc": 100.0,
+      "exact": 100.0,
+      "failures": []
+    },
+    {
+      "d_model": 512,
+      "noise": 0.25,
+      "n": 120,
+      "byte_acc": 100.0,
+      "L_acc": 100.0,
+      "exact": 100.0,
+      "failures": []
+    },
+    {
+      "d_model": 512,
+      "noise": 0.5,
+      "n": 120,
+      "byte_acc": 99.88,
+      "L_acc": 100.0,
+      "exact": 99.17,
+      "failures": [
+        {
+          "probe": "\u0928\u092e\u0938\u094d\u0924\u0947",
+          "true_L": 15,
+          "pred_L": 15,
+          "decoded": "\u0928\u092e\u0938\ufffd\ufffd\u0924"
+        }
+      ]
+    },
+    {
+      "d_model": 768,
+      "noise": 0.0,
+      "n": 24,
+      "byte_acc": 100.0,
+      "L_acc": 100.0,
+      "exact": 100.0,
+      "failures": []
+    },
+    {
+      "d_model": 768,
+      "noise": 0.1,
+      "n": 120,
+      "byte_acc": 100.0,
+      "L_acc": 100.0,
+      "exact": 100.0,
+      "failures": []
+    },
+    {
+      "d_model": 768,
+      "noise": 0.25,
+      "n": 120,
+      "byte_acc": 100.0,
+      "L_acc": 100.0,
+      "exact": 100.0,
+      "failures": []
+    },
+    {
+      "d_model": 768,
+      "noise": 0.5,
+      "n": 120,
+      "byte_acc": 100.0,
+      "L_acc": 100.0,
+      "exact": 100.0,
+      "failures": []
+    },
+    {
+      "d_model": 1024,
+      "noise": 0.0,
+      "n": 24,
+      "byte_acc": 100.0,
+      "L_acc": 100.0,
+      "exact": 100.0,
+      "failures": []
+    },
+    {
+      "d_model": 1024,
+      "noise": 0.1,
+      "n": 120,
+      "byte_acc": 100.0,
+      "L_acc": 100.0,
+      "exact": 100.0,
+      "failures": []
+    },
+    {
+      "d_model": 1024,
+      "noise": 0.25,
+      "n": 120,
+      "byte_acc": 100.0,
+      "L_acc": 100.0,
+      "exact": 100.0,
+      "failures": []
+    },
+    {
+      "d_model": 1024,
+      "noise": 0.5,
+      "n": 120,
+      "byte_acc": 100.0,
+      "L_acc": 100.0,
+      "exact": 100.0,
+      "failures": []
+    }
+  ]
+}

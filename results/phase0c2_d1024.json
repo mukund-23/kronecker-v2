@@ -1,0 +1,72 @@
+{
+  "args": {
+    "d_models": [
+      1024
+    ],
+    "d_p": 16,
+    "steps": 2000,
+    "every": 1000,
+    "block": 64,
+    "batch": 8,
+    "n_layer": 4,
+    "n_head": 8,
+    "lr": 0.0003,
+    "probe_n": 1500,
+    "fit_n": 8000,
+    "data": "shakespeare",
+    "device": "cuda"
+  },
+  "results": {
+    "1024": [
+      {
+        "pinv_exact": 100.0,
+        "pinv_byte": 100.0,
+        "pinv_L": 100.0,
+        "trained_exact": 97.2,
+        "trained_byte": 99.39,
+        "trained_L": 97.87,
+        "readout_fit_loss": 0.0004,
+        "step": 0,
+        "val_loss": 10.9406,
+        "rank": 1024,
+        "cond": 2.99,
+        "stable_rank": 456.13,
+        "top10pct_energy": 0.1943,
+        "fro": 31.9776
+      },
+      {
+        "pinv_exact": 99.33,
+        "pinv_byte": 99.89,
+        "pinv_L": 100.0,
+        "trained_exact": 95.93,
+        "trained_byte": 99.1,
+        "trained_L": 97.07,
+        "readout_fit_loss": 0.0004,
+        "step": 1000,
+        "val_loss": 4.9765,
+        "rank": 1024,
+        "cond": 13.88,
+        "stable_rank": 23.47,
+        "top10pct_energy": 0.2564,
+        "fro": 33.4841
+      },
+      {
+        "pinv_exact": 99.6,
+        "pinv_byte": 99.94,
+        "pinv_L": 100.0,
+        "trained_exact": 95.6,
+        "trained_byte": 99.01,
+        "trained_L": 97.0,
+        "readout_fit_loss": 0.0003,
+        "step": 2000,
+        "val_loss": 4.8629,
+        "rank": 1024,
+        "cond": 15.23,
+        "stable_rank": 20.73,
+        "top10pct_energy": 0.2896,
+        "fro": 34.0384
+      }
+    ]
+  },
+  "minutes": 12.9
+}

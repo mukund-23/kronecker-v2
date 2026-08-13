@@ -1,0 +1,137 @@
+{
+  "args": {
+    "d_model": 384,
+    "d_p": 16,
+    "steps": 2000,
+    "block": 128,
+    "batch": 16,
+    "n_layer": 4,
+    "n_head": 6,
+    "lr": 0.0003,
+    "every": 250,
+    "probe_n": 1500,
+    "device": "cuda"
+  },
+  "vocab": 50257,
+  "control_random_W": {
+    "exact": 99.533,
+    "byte_acc": 99.927,
+    "L_acc": 99.933,
+    "rank": 384,
+    "cond": 1.87,
+    "stable_rank": 226.07,
+    "top10pct_energy": 0.1536,
+    "fro": 19.6001
+  },
+  "snapshots": [
+    {
+      "step": 0,
+      "val_loss": 10.972,
+      "exact": 99.733,
+      "byte_acc": 99.958,
+      "L_acc": 99.933,
+      "rank": 384,
+      "cond": 1.87,
+      "stable_rank": 227.05,
+      "top10pct_energy": 0.1535,
+      "fro": 19.5906
+    },
+    {
+      "step": 250,
+      "val_loss": 5.1823,
+      "exact": 95.867,
+      "byte_acc": 99.354,
+      "L_acc": 99.867,
+      "rank": 384,
+      "cond": 5.15,
+      "stable_rank": 31.12,
+      "top10pct_energy": 0.1867,
+      "fro": 20.2497
+    },
+    {
+      "step": 500,
+      "val_loss": 4.8348,
+      "exact": 74.133,
+      "byte_acc": 95.832,
+      "L_acc": 99.533,
+      "rank": 384,
+      "cond": 5.27,
+      "stable_rank": 30.36,
+      "top10pct_energy": 0.1967,
+      "fro": 20.522
+    },
+    {
+      "step": 750,
+      "val_loss": 4.6931,
+      "exact": 69.6,
+      "byte_acc": 95.093,
+      "L_acc": 99.733,
+      "rank": 384,
+      "cond": 5.48,
+      "stable_rank": 28.59,
+      "top10pct_energy": 0.2036,
+      "fro": 20.6717
+    },
+    {
+      "step": 1000,
+      "val_loss": 4.5922,
+      "exact": 60.733,
+      "byte_acc": 93.707,
+      "L_acc": 99.8,
+      "rank": 384,
+      "cond": 5.54,
+      "stable_rank": 28.45,
+      "top10pct_energy": 0.208,
+      "fro": 20.7537
+    },
+    {
+      "step": 1250,
+      "val_loss": 4.6065,
+      "exact": 57.533,
+      "byte_acc": 93.113,
+      "L_acc": 99.8,
+      "rank": 384,
+      "cond": 5.58,
+      "stable_rank": 28.42,
+      "top10pct_energy": 0.2117,
+      "fro": 20.8189
+    },
+    {
+      "step": 1500,
+      "val_loss": 4.5932,
+      "exact": 53.867,
+      "byte_acc": 92.467,
+      "L_acc": 99.667,
+      "rank": 384,
+      "cond": 5.6,
+      "stable_rank": 28.5,
+      "top10pct_energy": 0.2149,
+      "fro": 20.8459
+    },
+    {
+      "step": 1750,
+      "val_loss": 4.6133,
+      "exact": 52.933,
+      "byte_acc": 92.3,
+      "L_acc": 99.667,
+      "rank": 384,
+      "cond": 5.56,
+      "stable_rank": 29.25,
+      "top10pct_energy": 0.2169,
+      "fro": 20.8454
+    },
+    {
+      "step": 2000,
+      "val_loss": 4.659,
+      "exact": 51.667,
+      "byte_acc": 92.03,
+      "L_acc": 99.533,
+      "rank": 384,
+      "cond": 5.51,
+      "stable_rank": 30.02,
+      "top10pct_energy": 0.2186,
+      "fro": 20.8153
+    }
+  ],
+  "minutes": 14.1
+}

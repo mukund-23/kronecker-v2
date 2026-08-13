@@ -1,0 +1,316 @@
+{
+  "d_p": 16,
+  "vocab": 50257,
+  "seed": 1337,
+  "rows": [
+    {
+      "d_model": 256,
+      "n": 50257,
+      "exact": 94.761,
+      "byte_acc": 99.013,
+      "L_acc": 99.59,
+      "by_length": {
+        "1": 100.0,
+        "2": 100.0,
+        "3": 100.0,
+        "4": 100.0,
+        "5": 99.93,
+        "6": 99.92,
+        "7": 99.22,
+        "8": 97.69,
+        "9": 93.11,
+        "10": 85.1,
+        "11": 73.65,
+        "12": 59.22,
+        "13": 43.81,
+        "14": 25.89,
+        "15": 17.91,
+        "16": 17.6
+      },
+      "failures": [
+        {
+          "id": 780,
+          "piece": "\u0120because",
+          "true_L": 8,
+          "pred_L": 8,
+          "decoded": " b\ufffdcause"
+        },
+        {
+          "id": 1321,
+          "piece": "\u0120information",
+          "true_L": 12,
+          "pred_L": 12,
+          "decoded": " i\ufffdf\ufffdrmation"
+        },
+        {
+          "id": 1634,
+          "piece": "ization",
+          "true_L": 7,
+          "pred_L": 7,
+          "decoded": "iz\ufffdtion"
+        },
+        {
+          "id": 1728,
+          "piece": "\u0120certain",
+          "true_L": 8,
+          "pred_L": 8,
+          "decoded": " ce\u0004tain"
+        },
+        {
+          "id": 1741,
+          "piece": "ulation",
+          "true_L": 7,
+          "pred_L": 7,
+          "decoded": "ul\ufffdtion"
+        },
+        {
+          "id": 1864,
+          "piece": "\u0120according",
+          "true_L": 10,
+          "pred_L": 10,
+          "decoded": "Xaccording"
+        },
+        {
+          "id": 1893,
+          "piece": "\u0120president",
+          "true_L": 10,
+          "pred_L": 10,
+          "decoded": "\ufffdpr\ufffdsident"
+        },
+        {
+          "id": 1981,
+          "piece": "\u0120individual",
+          "true_L": 11,
+          "pred_L": 10,
+          "decoded": " individua"
+        },
+        {
+          "id": 1992,
+          "piece": "\u0120President",
+          "true_L": 10,
+          "pred_L": 10,
+          "decoded": "\ufffdPresident"
+        },
+        {
+          "id": 1997,
+          "piece": "\u0120anything",
+          "true_L": 9,
+          "pred_L": 9,
+          "decoded": " a\ufffdything"
+        },
+        {
+          "id": 2041,
+          "piece": "\u0120special",
+          "true_L": 8,
+          "pred_L": 8,
+          "decoded": "Fspecial"
+        },
+        {
+          "id": 2059,
+          "piece": "\u0120University",
+          "true_L": 11,
+          "pred_L": 11,
+          "decoded": " U\u000biversity"
+        },
+        {
+          "id": 2260,
+          "piece": "\u0120national",
+          "true_L": 9,
+          "pred_L": 9,
+          "decoded": " n\ufffdtional"
+        },
+        {
+          "id": 2279,
+          "piece": "\u0120everything",
+          "true_L": 11,
+          "pred_L": 11,
+          "decoded": " everyThing"
+        },
+        {
+          "id": 2351,
+          "piece": "\u0120National",
+          "true_L": 9,
+          "pred_L": 9,
+          "decoded": " N\ufffdtional"
+        },
+        {
+          "id": 2383,
+          "piece": "\u0120significant",
+          "true_L": 12,
+          "pred_L": 12,
+          "decoded": "\ufffdsign\ufffdficant"
+        },
+        {
+          "id": 2424,
+          "piece": "\u0120respons",
+          "true_L": 8,
+          "pred_L": 8,
+          "decoded": "8respons"
+        },
+        {
+          "id": 2643,
+          "piece": "\u0120statement",
+          "true_L": 10,
+          "pred_L": 10,
+          "decoded": " statemeQt"
+        },
+        {
+          "id": 2683,
+          "piece": "\u0120questions",
+          "true_L": 10,
+          "pred_L": 10,
+          "decoded": " questVons"
+        },
+        {
+          "id": 2720,
+          "piece": "\u0120interview",
+          "true_L": 10,
+          "pred_L": 10,
+          "decoded": "\ufffdinterview"
+        },
+        {
+          "id": 2776,
+          "piece": "\u0120relationship",
+          "true_L": 13,
+          "pred_L": 13,
+          "decoded": " rJlationship"
+        },
+        {
+          "id": 2858,
+          "piece": "\u0120environment",
+          "true_L": 12,
+          "pred_L": 12,
+          "decoded": " enviroBment"
+        },
+        {
+          "id": 2882,
+          "piece": "\u0120response",
+          "true_L": 9,
+          "pred_L": 9,
+          "decoded": "8response"
+        },
+        {
+          "id": 3074,
+          "piece": "\u0120situation",
+          "true_L": 10,
+          "pred_L": 10,
+          "decoded": "Osituation"
+        },
+        {
+          "id": 3177,
+          "piece": "\u0120considered",
+          "true_L": 11,
+          "pred_L": 11,
+          "decoded": " con;idered"
+        }
+      ]
+    },
+    {
+      "d_model": 512,
+      "n": 50257,
+      "exact": 99.992,
+      "byte_acc": 99.999,
+      "L_acc": 100.0,
+      "by_length": {
+        "1": 100.0,
+        "2": 100.0,
+        "3": 100.0,
+        "4": 100.0,
+        "5": 100.0,
+        "6": 100.0,
+        "7": 100.0,
+        "8": 100.0,
+        "9": 100.0,
+        "10": 100.0,
+        "11": 99.95,
+        "12": 100.0,
+        "13": 100.0,
+        "14": 99.4,
+        "15": 99.25,
+        "16": 100.0
+      },
+      "failures": [
+        {
+          "id": 14798,
+          "piece": "\u0120prescribed",
+          "true_L": 11,
+          "pred_L": 11,
+          "decoded": " pres0ribed"
+        },
+        {
+          "id": 19941,
+          "piece": "\u0120statistically",
+          "true_L": 14,
+          "pred_L": 14,
+          "decoded": " st0tistically"
+        },
+        {
+          "id": 34058,
+          "piece": "\u0120Superintendent",
+          "true_L": 15,
+          "pred_L": 15,
+          "decoded": " Superint\ufffdndent"
+        },
+        {
+          "id": 34092,
+          "piece": "\u0120prescriptions",
+          "true_L": 14,
+          "pred_L": 14,
+          "decoded": " pres\ufffdriptions"
+        }
+      ]
+    },
+    {
+      "d_model": 768,
+      "n": 50257,
+      "exact": 100.0,
+      "byte_acc": 100.0,
+      "L_acc": 100.0,
+      "by_length": {
+        "1": 100.0,
+        "2": 100.0,
+        "3": 100.0,
+        "4": 100.0,
+        "5": 100.0,
+        "6": 100.0,
+        "7": 100.0,
+        "8": 100.0,
+        "9": 100.0,
+        "10": 100.0,
+        "11": 100.0,
+        "12": 100.0,
+        "13": 100.0,
+        "14": 100.0,
+        "15": 100.0,
+        "16": 100.0
+      },
+      "failures": []
+    },
+    {
+      "d_model": 1024,
+      "n": 50257,
+      "exact": 100.0,
+      "byte_acc": 100.0,
+      "L_acc": 100.0,
+      "by_length": {
+        "1": 100.0,
+        "2": 100.0,
+        "3": 100.0,
+        "4": 100.0,
+        "5": 100.0,
+        "6": 100.0,
+        "7": 100.0,
+        "8": 100.0,
+        "9": 100.0,
+        "10": 100.0,
+        "11": 100.0,
+        "12": 100.0,
+        "13": 100.0,
+        "14": 100.0,
+        "15": 100.0,
+        "16": 100.0
+      },
+      "failures": []
+    }
+  ]
+}

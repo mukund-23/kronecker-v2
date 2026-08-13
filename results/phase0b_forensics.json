@@ -1,0 +1,291 @@
+{
+  "d_p": 16,
+  "tokenizers": {
+    "gpt2": {
+      "hf_id": "gpt2",
+      "reference": {
+        "label": "reference",
+        "live_tokens": 50257,
+        "d_p": 16,
+        "colliding_groups": 21,
+        "colliding_tokens": 384,
+        "colliding_pct": 0.7641,
+        "replacement_groups": 1,
+        "replacement_tokens": 255,
+        "truncation_groups": 13,
+        "truncation_tokens": 42,
+        "other_groups": 7,
+        "other_tokens": 87,
+        "replacement_examples": [
+          "\u00a1",
+          "\u00a2",
+          "\u00a3",
+          "\u00a4",
+          "\u00a5",
+          "\u00a6",
+          "\u00a7",
+          "\u00a8",
+          "\u00a9",
+          "\u00aa",
+          "\u00ab",
+          "\u00ac",
+          "\u00ae",
+          "\u00af",
+          "\u00b0"
+        ],
+        "other_examples": [
+          {
+            "bytes": " \ufffd",
+            "pieces": [
+              "\u0120\u00e2\u0122",
+              "\u0120\u00c2",
+              "\u0120\u00e2",
+              "\u0120\u00e8",
+              "\u0120\u00c3",
+              "\u0120\u00ce"
+            ]
+          },
+          {
+            "bytes": "\ufffd\ufffd",
+            "pieces": [
+              "\u00bf\u00bd",
+              "\u00ef\u00bf\u00bd\u00ef\u00bf\u00bd",
+              "\u00a3\u0131",
+              "\u012a\u0134",
+              "\u0126\u00a2",
+              "\u0124\u00ac"
+            ]
+          },
+          {
+            "bytes": "\u2014\u2014\u2014\u2014\u2014",
+            "pieces": [
+              "\u00e2\u0122\u0136\u00e2\u0122\u0136\u00e2\u0122\u0136\u00e2\u0122\u0136\u00e2\u0122\u0136\u00e2\u0122\u0136\u00e2\u0122\u0136\u00e2\u0122\u0136",
+              "\u00e2\u0122\u0136\u00e2\u0122\u0136\u00e2\u0122\u0136\u00e2\u0122\u0136\u00e2\u0122\u0136\u00e2\u0122\u0136\u00e2\u0122\u0136\u00e2\u0122\u0136\u00e2\u0122\u0136\u00e2\u0122\u0136\u00e2\u0122\u0136\u00e2\u0122\u0136\u00e2\u0122\u0136\u00e2\u0122\u0136\u00e2\u0122\u0136\u00e2\u0122\u0136"
+            ]
+          },
+          {
+            "bytes": "\u306e\ufffd",
+            "pieces": [
+              "\u00e3\u0123\u00ae\u00e5",
+              "\u00e3\u0123\u00ae\u00e7",
+              "\u00e3\u0123\u00ae\u00e6",
+              "\u00e3\u0123\u00ae\u00e9",
+              "\u00e3\u0123\u00ae\u00e5\u00ae"
+            ]
+          },
+          {
+            "bytes": "\u9f8d\ufffd",
+            "pieces": [
+              "\u00e9\u00be\u012f\u00e5",
+              "\u00e9\u00be\u012f\u00e5\u00a5"
+            ]
+          },
+          {
+            "bytes": " \u88cf\ufffd",
+            "pieces": [
+              "\u0120\u00e8\u00a3\u0131\u00e7",
+              "\u0120\u00e8\u00a3\u0131\u00e8"
+            ]
+          }
+        ]
+      },
+      "fixed": {
+        "label": "fixed",
+        "live_tokens": 50257,
+        "d_p": 16,
+        "colliding_groups": 14,
+        "colliding_tokens": 44,
+        "colliding_pct": 0.0875,
+        "replacement_groups": 0,
+        "replacement_tokens": 0,
+        "truncation_groups": 14,
+        "truncation_tokens": 44,
+        "other_groups": 0,
+        "other_tokens": 0,
+        "replacement_examples": [],
+        "other_examples": [],
+        "byte_decoder_available": true
+      },
+      "tokens_changed": 349,
+      "collisions_removed": 340,
+      "ceiling_vs_dp": {
+        "8": {
+          "colliding_tokens": 7571,
+          "pct": 15.0646,
+          "mean_L": 5.83,
+          "at_ceiling": 15979
+        },
+        "16": {
+          "colliding_tokens": 44,
+          "pct": 0.0875,
+          "mean_L": 6.37,
+          "at_ceiling": 130
+        },
+        "32": {
+          "colliding_tokens": 17,
+          "pct": 0.0338,
+          "mean_L": 6.38,
+          "at_ceiling": 25
+        },
+        "64": {
+          "colliding_tokens": 2,
+          "pct": 0.004,
+          "mean_L": 6.38,
+          "at_ceiling": 8
+        }
+      }
+    },
+    "sarvam": {
+      "hf_id": "sarvamai/sarvam-1",
+      "reference": {
+        "label": "reference",
+        "live_tokens": 68095,
+        "d_p": 16,
+        "colliding_groups": 9733,
+        "colliding_tokens": 26909,
+        "colliding_pct": 39.5169,
+        "replacement_groups": 0,
+        "replacement_tokens": 0,
+        "truncation_groups": 1,
+        "truncation_tokens": 4096,
+        "other_groups": 9732,
+        "other_tokens": 22813,
+        "replacement_examples": [],
+        "other_examples": [
+          {
+            "bytes": "\n",
+            "pieces": [
+              "\n",
+              "<0x0A>"
+            ]
+          },
+          {
+            "bytes": "\r",
+            "pieces": [
+              "\r",
+              "<0x0D>"
+            ]
+          },
+          {
+            "bytes": "\t",
+            "pieces": [
+              "\t",
+              "<0x09>"
+            ]
+          },
+          {
+            "bytes": " ",
+            "pieces": [
+              "<0x20>",
+              "\u2581\u2581"
+            ]
+          },
+          {
+            "bytes": "!",
+            "pieces": [
+              "<0x21>",
+              "\u2581!",
+              "!"
+            ]
+          },
+          {
+            "bytes": "\"",
+            "pieces": [
+              "<0x22>",
+              "\u2581\"",
+              "\""
+            ]
+          }
+        ]
+      },
+      "fixed": {
+        "label": "fixed",
+        "live_tokens": 68096,
+        "d_p": 16,
+        "colliding_groups": 3773,
+        "colliding_tokens": 14630,
+        "colliding_pct": 21.4844,
+        "replacement_groups": 0,
+        "replacement_tokens": 0,
+        "truncation_groups": 3254,
+        "truncation_tokens": 13216,
+        "other_groups": 519,
+        "other_tokens": 1414,
+        "replacement_examples": [],
+        "other_examples": [
+          {
+            "bytes": "\n",
+            "pieces": [
+              "\n",
+              "<0x0A>"
+            ]
+          },
+          {
+            "bytes": "\r",
+            "pieces": [
+              "\r",
+              "<0x0D>"
+            ]
+          },
+          {
+            "bytes": "\t",
+            "pieces": [
+              "\t",
+              "<0x09>"
+            ]
+          },
+          {
+            "bytes": " ",
+            "pieces": [
+              "<0x20>",
+              "\u2581"
+            ]
+          },
+          {
+            "bytes": "!",
+            "pieces": [
+              "<0x21>",
+              "!"
+            ]
+          },
+          {
+            "bytes": "\"",
+            "pieces": [
+              "<0x22>",
+              "\""
+            ]
+          }
+        ],
+        "byte_decoder_available": false
+      },
+      "tokens_changed": 41452,
+      "collisions_removed": 12279,
+      "ceiling_vs_dp": {
+        "8": {
+          "colliding_tokens": 51383,
+          "pct": 75.4567,
+          "mean_L": 6.41,
+          "at_ceiling": 7299
+        },
+        "16": {
+          "colliding_tokens": 14630,
+          "pct": 21.4844,
+          "mean_L": 11.18,
+          "at_ceiling": 21255
+        },
+        "32": {
+          "colliding_tokens": 280,
+          "pct": 0.4112,
+          "mean_L": 13.0,
+          "at_ceiling": 0
+        },
+        "64": {
+          "colliding_tokens": 192,
+          "pct": 0.282,
+          "mean_L": 13.02,
+          "at_ceiling": 0
+        }
+      }
+    }
+  }
+}
