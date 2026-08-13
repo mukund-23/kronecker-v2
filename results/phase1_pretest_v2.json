@@ -1,0 +1,75 @@
+{
+  "args": {
+    "n_states": 400000,
+    "block": 256,
+    "d_p": 16,
+    "epochs": 12,
+    "bs": 2048,
+    "lr": 0.001,
+    "val_frac": 0.1,
+    "d_h": [
+      256
+    ],
+    "arms": [
+      "Aprime",
+      "A",
+      "B",
+      "C"
+    ],
+    "data": "fineweb",
+    "refresh": false,
+    "device": "cuda"
+  },
+  "d_model": 768,
+  "vocab": 50257,
+  "results": {
+    "A'": {
+      "top1": 37.58,
+      "bpb": 1.0405,
+      "decode_ms_per_10k": 1302.1,
+      "arm": "A'",
+      "name": "frozen pretrained lm_head (ceiling)",
+      "params": 38597376,
+      "trained": false
+    },
+    "A": {
+      "top1": 31.273,
+      "bpb": 1.579,
+      "decode_ms_per_10k": 2094.8,
+      "arm": "A",
+      "name": "retrained vocab softmax (v1 control)",
+      "params": 38597376,
+      "trained": true,
+      "train_min": 9.6
+    },
+    "B": {
+      "top1": 20.96,
+      "bpb": 3.0051,
+      "decode_ms_per_10k": 137.1,
+      "byte_acc": 38.558,
+      "exact": 20.96,
+      "arm": "B",
+      "name": "byte-position, independent slots",
+      "params": 3149824,
+      "trained": true,
+      "train_min": 0.9
+    },
+    "C": {
+      "top1": 25.258,
+      "bpb": 1.7122,
+      "decode_ms_per_10k": 44002.3,
+      "byte_acc": 34.936,
+      "exact": 25.258,
+      "arm": "C",
+      "name": "byte-position AR over slots (d_h=256)",
+      "params": 1912064,
+      "trained": true,
+      "d_h": 256,
+      "train_min": 15.1
+    }
+  },
+  "caveats": [
+    "Arms B and C read the true token's byte length from the target rather than modelling it; their distributions are not normalised over strings. This favours B and C.",
+    "Arm C decodes d_p sequential steps per token; see decode_ms_per_10k for the throughput cost."
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "args": {
+    "d_model": 768,
+    "d_p": 16,
+    "probe_n": 1500,
+    "epochs": 500,
+    "fit_ns": [
+      8000,
+      15000,
+      30000,
+      45000,
+      -1
+    ],
+    "seeds": 1,
+    "device": "cuda"
+  },
+  "pinv_exact": 100.0,
+  "pinv_byte": 100.0,
+  "rows": [
+    {
+      "fit_n": 8000,
+      "overlap": false,
+      "exact": 96.73,
+      "byte": 98.95,
+      "exact_std": 0.0,
+      "gap_to_pinv": 3.27,
+      "sec": 48.7
+    },
+    {
+      "fit_n": 15000,
+      "overlap": false,
+      "exact": 97.73,
+      "byte": 99.29,
+      "exact_std": 0.0,
+      "gap_to_pinv": 2.27,
+      "sec": 85.6
+    },
+    {
+      "fit_n": 30000,
+      "overlap": false,
+      "exact": 98.47,
+      "byte": 99.54,
+      "exact_std": 0.0,
+      "gap_to_pinv": 1.53,
+      "sec": 168.3
+    },
+    {
+      "fit_n": 45000,
+      "overlap": false,
+      "exact": 98.6,
+      "byte": 99.63,
+      "exact_std": 0.0,
+      "gap_to_pinv": 1.4,
+      "sec": 245.8
+    },
+    {
+      "fit_n": 50257,
+      "overlap": true,
+      "exact": 100.0,
+      "byte": 100.0,
+      "exact_std": 0.0,
+      "gap_to_pinv": 0.0,
+      "sec": 280.6
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "args": {
+    "n_states": 400000,
+    "block": 256,
+    "d_p": 16,
+    "epochs": 12,
+    "bs": 2048,
+    "lr": 0.001,
+    "val_frac": 0.1,
+    "arms": [
+      "A",
+      "B",
+      "C"
+    ],
+    "data": "fineweb",
+    "refresh": false,
+    "device": "cuda"
+  },
+  "d_model": 768,
+  "vocab": 50257,
+  "results": {
+    "A": {
+      "top1": 31.262,
+      "bpb": 1.5801,
+      "arm": "A",
+      "name": "vocab softmax (control)",
+      "params": 38597376,
+      "minutes": 9.7
+    },
+    "B": {
+      "top1": 20.95,
+      "bpb": 3.0041,
+      "byte_acc": 38.604,
+      "exact": 20.95,
+      "arm": "B",
+      "name": "byte-position, independent slots",
+      "params": 3149824,
+      "minutes": 0.9
+    },
+    "C": {
+      "top1": 25.442,
+      "bpb": 1.709,
+      "byte_acc": 34.895,
+      "exact": 25.442,
+      "arm": "C",
+      "name": "byte-position, autoregressive over slots",
+      "params": 1912064,
+      "minutes": 16.6
+    }
+  }
+}

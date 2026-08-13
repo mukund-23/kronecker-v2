@@ -1,0 +1,189 @@
+{
+  "args": {
+    "d_models": [
+      384,
+      768,
+      1024
+    ],
+    "d_p": 16,
+    "steps": 2000,
+    "every": 1000,
+    "block": 64,
+    "batch": 8,
+    "n_layer": 4,
+    "n_head": 8,
+    "lr": 0.0003,
+    "probe_n": 1500,
+    "fit_pool": 30000,
+    "stage": "both",
+    "device": "cuda"
+  },
+  "grid": [
+    [
+      8000,
+      60,
+      0
+    ],
+    [
+      8000,
+      500,
+      0
+    ],
+    [
+      30000,
+      500,
+      0
+    ],
+    [
+      30000,
+      500,
+      2048
+    ]
+  ],
+  "rows": [
+    {
+      "d_model": 384,
+      "fit_n": 8000,
+      "epochs": 60,
+      "hidden": 0,
+      "exact": 95.8,
+      "byte": 98.73,
+      "pinv_exact": 99.73,
+      "gap": 3.93,
+      "fit_loss": 0.018,
+      "sec": 6.7
+    },
+    {
+      "d_model": 384,
+      "fit_n": 8000,
+      "epochs": 500,
+      "hidden": 0,
+      "exact": 96.4,
+      "byte": 98.9,
+      "pinv_exact": 99.73,
+      "gap": 3.33,
+      "fit_loss": 0.0013,
+      "sec": 28.9
+    },
+    {
+      "d_model": 384,
+      "fit_n": 30000,
+      "epochs": 500,
+      "hidden": 0,
+      "exact": 98.53,
+      "byte": 99.56,
+      "pinv_exact": 99.73,
+      "gap": 1.2,
+      "fit_loss": 0.0002,
+      "sec": 98.9
+    },
+    {
+      "d_model": 384,
+      "fit_n": 30000,
+      "epochs": 500,
+      "hidden": 2048,
+      "exact": 98.2,
+      "byte": 99.48,
+      "pinv_exact": 99.73,
+      "gap": 1.53,
+      "fit_loss": 0.0,
+      "sec": 558.2
+    },
+    {
+      "d_model": 768,
+      "fit_n": 8000,
+      "epochs": 60,
+      "hidden": 0,
+      "exact": 96.47,
+      "byte": 98.91,
+      "pinv_exact": 100.0,
+      "gap": 3.53,
+      "fit_loss": 0.0017,
+      "sec": 11.1
+    },
+    {
+      "d_model": 768,
+      "fit_n": 8000,
+      "epochs": 500,
+      "hidden": 0,
+      "exact": 96.53,
+      "byte": 98.92,
+      "pinv_exact": 100.0,
+      "gap": 3.47,
+      "fit_loss": 0.0003,
+      "sec": 49.8
+    },
+    {
+      "d_model": 768,
+      "fit_n": 30000,
+      "epochs": 500,
+      "hidden": 0,
+      "exact": 98.47,
+      "byte": 99.56,
+      "pinv_exact": 100.0,
+      "gap": 1.53,
+      "fit_loss": 0.0,
+      "sec": 169.1
+    },
+    {
+      "d_model": 768,
+      "fit_n": 30000,
+      "epochs": 500,
+      "hidden": 2048,
+      "exact": 97.67,
+      "byte": 99.41,
+      "pinv_exact": 100.0,
+      "gap": 2.33,
+      "fit_loss": 0.0,
+      "sec": 586.1
+    },
+    {
+      "d_model": 1024,
+      "fit_n": 8000,
+      "epochs": 60,
+      "hidden": 0,
+      "exact": 96.4,
+      "byte": 98.93,
+      "pinv_exact": 100.0,
+      "gap": 3.6,
+      "fit_loss": 0.0005,
+      "sec": 12.2
+    },
+    {
+      "d_model": 1024,
+      "fit_n": 8000,
+      "epochs": 500,
+      "hidden": 0,
+      "exact": 96.67,
+      "byte": 98.98,
+      "pinv_exact": 100.0,
+      "gap": 3.33,
+      "fit_loss": 0.0001,
+      "sec": 57.6
+    },
+    {
+      "d_model": 1024,
+      "fit_n": 30000,
+      "epochs": 500,
+      "hidden": 0,
+      "exact": 98.47,
+      "byte": 99.54,
+      "pinv_exact": 100.0,
+      "gap": 1.53,
+      "fit_loss": 0.0,
+      "sec": 203.7
+    },
+    {
+      "d_model": 1024,
+      "fit_n": 30000,
+      "epochs": 500,
+      "hidden": 2048,
+      "exact": 97.67,
+      "byte": 99.38,
+      "pinv_exact": 100.0,
+      "gap": 2.33,
+      "fit_loss": 0.0,
+      "sec": 615.6
+    }
+  ]
+}

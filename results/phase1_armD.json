@@ -1,0 +1,106 @@
+{
+  "args": {
+    "n_states": 400000,
+    "block": 256,
+    "d_p": 16,
+    "epochs": 12,
+    "bs": 2048,
+    "lr": 0.001,
+    "val_frac": 0.1,
+    "d_h": 256,
+    "rank": 64,
+    "arms": [
+      "B",
+      "D1",
+      "D2",
+      "D3",
+      "C"
+    ],
+    "data": "fineweb",
+    "refresh": false,
+    "device": "cuda"
+  },
+  "results": {
+    "B": {
+      "top1": 20.913,
+      "bpb": 3.0053,
+      "decode_ms_per_10k": 162.0,
+      "byte_acc": 38.609,
+      "exact": 20.913,
+      "arm": "B",
+      "name": "independent slots (baseline)",
+      "params": 3149824,
+      "decode_passes": 1,
+      "train_min": 0.9
+    },
+    "D1": {
+      "top1": 22.125,
+      "bpb": 3.001,
+      "decode_ms_per_10k": 1494.9,
+      "byte_acc": 38.735,
+      "exact": 22.125,
+      "arm": "D1",
+      "name": "parallel slot mixer (d_h=256)",
+      "params": 1846272,
+      "decode_passes": 1,
+      "train_min": 12.3
+    },
+    "D2": {
+      "top1": 21.402,
+      "bpb": 2.9966,
+      "decode_ms_per_10k": 138.8,
+      "byte_acc": 38.727,
+      "exact": 21.402,
+      "arm": "D2",
+      "name": "low-rank coupling (r=64)",
+      "params": 3461184,
+      "decode_passes": 1,
+      "train_min": 1.1
+    },
+    "D3": {
+      "top1": 22.13,
+      "bpb": 3.0136,
+      "decode_ms_per_10k": 743.1,
+      "byte_acc": 38.988,
+      "exact": 22.13,
+      "arm": "D3",
+      "name": "two-pass refinement (d_h=256)",
+      "params": 4271872,
+      "decode_passes": 2,
+      "train_min": 7.4
+    },
+    "C": {
+      "top1": 25.405,
+      "bpb": 1.7246,
+      "decode_ms_per_10k": 12876.7,
+      "byte_acc": 35.063,
+      "exact": 25.405,
+      "arm": "C",
+      "name": "autoregressive over slots (d_h=256)",
+      "params": 1912064,
+      "decode_passes": 16,
+      "train_min": 13.1
+    }
+  },
+  "reference": {
+    "A'": {
+      "top1": 37.58,
+      "bpb": 1.0405,
+      "decode_ms_per_10k": 1302.1,
+      "arm": "A'",
+      "name": "frozen pretrained lm_head (ceiling)",
+      "params": 38597376,
+      "trained": false
+    },
+    "A": {
+      "top1": 31.273,
+      "bpb": 1.579,
+      "decode_ms_per_10k": 2094.8,
+      "arm": "A",
+      "name": "retrained vocab softmax (v1 control)",
+      "params": 38597376,
+      "trained": true,
+      "train_min": 9.6
+    }
+  }
+}
