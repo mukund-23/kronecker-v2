@@ -14,7 +14,7 @@ The Kronecker codec **is** invertible — exactly, in closed form, at every prac
 | independent byte slots | 3.0053 | 3.15M | 1× |
 | **autoregressive over slots** | **1.7246** | **1.91M** | **79×** |
 
-Breaking slot independence is worth **1.28 bpb**. Three architecturally distinct *parallel* alternatives recovered **under 1%** of it. Sequential commitment across byte positions appears intrinsic, and it costs 79× decode latency.
+Breaking slot independence is worth **1.28 bpb**. Three architecturally distinct *parallel* alternatives recovered **under 1%** of it. No parallel alternative we tested closed the gap, though none were tuned — and the sequential decoding that does work costs 79× latency.
 
 **A vocabulary-independent output layer is achievable, but it is a tradeoff, not a free saving.**
 
@@ -143,7 +143,7 @@ Two results here:
 
 **Training consumes headroom; it does not destroy invertibility.** At exactly the boundary there is nothing to consume and recovery collapses. At 2.7× it survives essentially intact. *(An earlier run at d_model=384 alone reported 99.7%→51.7% and looked like total collapse — it was a zero-margin artifact.)*
 
-**Stable rank converges to ~21 regardless of starting width.** 228, 375 and 456 all land in the same narrow band. *(n=1 per width, TinyShakespeare only, one 4-layer architecture — this is the most surprising result here and the least replicated.. Training drives the projection to a fixed effective dimensionality independent of `d_model`; everything above that is the margin that keeps recovery working. Condition number stayed healthy (1.9→5.5) throughout, so standard numerical conditioning would have missed this entirely — **stable rank is the diagnostic**.
+**Stable rank converges to ~21 regardless of starting width.** 228, 375 and 456 all land in the same narrow band. *(n=1 per width, TinyShakespeare only, one 4-layer architecture — this is the most surprising result here and the least replicated.)* Training drives the projection to a fixed effective dimensionality independent of `d_model`; everything above that is the margin that keeps recovery working. Condition number stayed healthy (1.9→5.5) throughout, so standard numerical conditioning would have missed this entirely — **stable rank is the diagnostic**.
 
 **Sizing rule: `d_model ≥ 2.7 × d_model*` ≈ 1037.** Every production model is far above this.
 
@@ -163,7 +163,7 @@ Two conclusions: **capacity is not the bottleneck — sample coverage is**, and 
 
 ---
 
-## 5. Phase 0 by-products: two defects in V1
+## 5. Phase 0 by-products: two issues in V1
 
 Inversion surfaces problems a forward-only codec structurally cannot detect — nothing in V1's design ever asks whether two tokens collide.
 
@@ -256,7 +256,7 @@ Arm C's 1.28 bpb gain came bundled with sequential decoding. Three **one-pass** 
 
 **All three parallel designs collapsed onto the baseline**, within 0.017 bpb of B. C is 1.28 bpb better. That is a categorical separation, not a tuning gap.
 
-**Why.** A one-pass head must emit a **product distribution** — 16 independent categoricals — however much the slots consult each other first. That factorisation represents one joint mode. Given a hidden state consistent with both `cat` and `car`, the best product distribution also assigns mass to hybrids that are not tokens. C escapes this by conditioning on *realised* bytes: once slot 3 commits to `t`, slot 4's distribution changes.
+**Why (hypothesis)** A one-pass head must emit a **product distribution** — 16 independent categoricals — however much the slots consult each other first. That factorisation represents one joint mode. Given a hidden state consistent with both `cat` and `car`, the best product distribution also assigns mass to hybrids that are not tokens. C escapes this by conditioning on *realised* bytes: once slot 3 commits to `t`, slot 4's distribution changes.
 
 **D3 is the sharpest evidence.** It *does* feed back realised bytes — all 16 at once — and gained nothing. So the mechanism is not feedback; it is **sequential commitment**.
 
