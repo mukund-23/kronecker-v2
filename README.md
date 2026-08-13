@@ -1,6 +1,5 @@
 # Inverting the Kronecker Codec
 
-**Assignment 7 — Kronecker Embeddings V2, Problem 5**
 
 > *"Kronecker is forward deterministic (same word will always give same embedding). How do I make a reverse of this? If we can do this, then we can get rid of the final head as well. Then we can have a vocab of 1M as well without any issues!"*
 
@@ -19,7 +18,7 @@ Breaking slot independence is worth **1.28 bpb**. Three architecturally distinct
 
 **A vocabulary-independent output layer is achievable, but it is a tradeoff, not a free saving.**
 
-Along the way we found two byte-extraction defects in Kronecker V1 that a forward-only codec cannot self-detect, and showed that `d_p=16` is unsafe for Indic scripts.
+Along the way we found two byte-extraction issues in Kronecker V1 that a forward-only codec cannot self-detect, and showed that `d_p=16` is unsafe for Indic scripts.
 
 ---
 
@@ -332,12 +331,10 @@ All results in `results/*.json`. Phase 0 runs on CPU except 06–08; Phase 1 nee
 
 ## 10. Proposed next steps
 
-**If this becomes a paper**, the additions needed are:
+**For a more comprehensive research**, the additions needed are:
 
 1. Three seeds per arm — currently the weakest methodological point
 2. End-to-end training with a byte head, rather than frozen states (the 250M-token FineWeb-Edu shards are already prepared)
 3. Explicit length/EOS modelling so the byte-head distribution is properly normalised
 4. A third tokenizer family (Llama-3.2, pending HF access)
 5. A parallel non-factorised decoder — the open problem §7 identifies
-
-**Proposed framing:** *Inverting the Kronecker codec — recovery bounds, a margin law for trained projections, and the factorisation constraint on byte-level output heads.* Every claim in that title is measured here. The 1M-vocabulary application belongs in future work, not the abstract.
