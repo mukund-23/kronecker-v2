@@ -125,7 +125,7 @@ Sweeping `d_p × d_model` and taking the smallest `d_model` reaching ≥99% exac
 | 32 | 8,192 | 6.36 | **384** | 60.4 |
 | 64 | 16,384 | 6.34 | **384** | 60.6 |
 
-**D quadruples; the boundary does not move.** Because κ is L-sparse, recovery is `L` multiple-choice questions over 256 options — empty slots cost nothing. This matches the `O(L·log 256)` prediction from structured sparse recovery.
+**D quadruples; the boundary does not move.** Because κ is L-sparse, recovery is `L` multiple-choice questions over 256 options — empty slots cost nothing. This is consistent with an `O(L·log 256)` scaling from structured sparse recovery, but that is an observed invariant on **random Gaussian W**, not a proof, and not established for trained projections — §4.4 tests the trained case at three widths and one `d_p` only.
 
 **Why it matters:** the scale claim can be made from analysis rather than from production-scale training. Production (`d_p=32, d_model=4096`) sits **10.7× above** the boundary.
 
@@ -143,7 +143,7 @@ Two results here:
 
 **Training consumes headroom; it does not destroy invertibility.** At exactly the boundary there is nothing to consume and recovery collapses. At 2.7× it survives essentially intact. *(An earlier run at d_model=384 alone reported 99.7%→51.7% and looked like total collapse — it was a zero-margin artifact.)*
 
-**Stable rank converges to ~21 regardless of starting width.** 228, 375 and 456 all land in the same narrow band. Training drives the projection to a fixed effective dimensionality independent of `d_model`; everything above that is the margin that keeps recovery working. Condition number stayed healthy (1.9→5.5) throughout, so standard numerical conditioning would have missed this entirely — **stable rank is the diagnostic**.
+**Stable rank converges to ~21 regardless of starting width.** 228, 375 and 456 all land in the same narrow band. *(n=1 per width, TinyShakespeare only, one 4-layer architecture — this is the most surprising result here and the least replicated.. Training drives the projection to a fixed effective dimensionality independent of `d_model`; everything above that is the margin that keeps recovery working. Condition number stayed healthy (1.9→5.5) throughout, so standard numerical conditioning would have missed this entirely — **stable rank is the diagnostic**.
 
 **Sizing rule: `d_model ≥ 2.7 × d_model*` ≈ 1037.** Every production model is far above this.
 
@@ -218,6 +218,8 @@ Static recovery operates on the *exact* embedding. A transformer produces a **hi
 | B | byte-position, independent slots | 3.15M | 3.0051 | 20.96% | 20.96% |
 | C | byte-position, autoregressive over slots | 1.91M | 1.7122 | 25.26% | 25.26% |
 
+**Caveat, stated up front:** arms B and C read the true token's byte length from the target rather than modelling it, so their distributions are not normalised over strings. **Every byte-head number below is optimistic by an unmeasured margin.** Proper EOS/length prediction is required before these are directly comparable to a vocabulary softmax
+
 **Two comparisons, reported separately because they answer different questions:**
 
 - **C vs A′ = +64.6%.** Can a byte head *replace* a fully-trained `lm_head`? Not on this budget — A′ was trained on ~40B tokens, our heads on 360K states.
@@ -275,14 +277,15 @@ A 20× parameter saving that costs 79× decode latency is not an unqualified win
 3. **Trained projections preserve recovery above ~2.7× margin.** Training consumes headroom rather than destroying invertibility. Stable rank converges to ~21 regardless of starting width; condition number does not detect this.
 4. **Kronecker V1's byte extraction has two issues** — UTF-8 fragment collapse on byte-level BPE (255 GPT-2 tokens sharing one embedding) and SentencePiece whitespace mishandling (41,452 Sarvam tokens). Neither is detectable by a forward-only codec.
 5. **`d_p=16` is unsafe for Indic scripts.** 21.48% Sarvam collisions vs 0.09% for GPT-2; 31% of the Sarvam vocabulary truncated. `d_p=32` resolves it.
-6. **A byte-level output head requires an autoregressive factorisation over positions.** Breaking slot independence is worth 1.28 bpb; three parallel alternatives recover under 1%.
-7. **That requirement carries a 79× decode-latency cost.** Vocabulary-independence is a tradeoff, not a free saving.
+6. **Cross-position dependence dominates byte-head quality.** Breaking slot independence is worth 1.28 bpb — the largest effect measured in this work.
+7. **No parallel design we tested recovered more than 1% of that gain.** D1 (slot attention), D2 (low-rank coupling) and D3 (iterative refinement) span three distinct mechanisms and all landed within 0.017 bpb of the independent baseline. **This does not prove sequential decoding is necessary** — none were hyperparameter-tuned, and stronger parallel decoders (diffusion-style, insertion-based) are untested. The product-distribution argument in §6.3 is a *hypothesis* consistent with the result, not a theorem.
+8. **Sequential decoding costs 79× latency versus independent slots.** This is the largest practical obstacle to a byte-level output head — larger, arguably, than the bpb gap, since the parameter saving is worthless if decoding is two orders of magnitude slower.
 
 ### What this means for V2
 
 - Output-side Kronecker is **feasible**. Static invertibility is not the obstacle; it holds comfortably at every practical width.
-- The binding constraint is **distributional**, not geometric — how the byte distribution factorises, not whether the codec can be inverted.
-- The open engineering problem is **parallel decoding with a non-factorised distribution**. Diffusion-style or insertion-based decoders are the natural next candidates; slot attention, low-rank coupling and iterative refinement are ruled out.
+- The binding constraint appears to be **distributional**, not geometric — how the byte distribution factorises, not whether the codec can be inverted.
+- The open engineering problem is **efficient decoding under a non-factorised distribution**. Slot attention, low-rank coupling and iterative refinement did not work in the forms tested; diffusion-style and insertion-based decoders remain the obvious untried candidates.
 - `d_p` should be **script-aware**. A single global value cannot serve both Latin and Indic vocabularies.
 
 ---
