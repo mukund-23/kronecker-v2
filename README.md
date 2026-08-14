@@ -163,7 +163,7 @@ Two conclusions: **capacity is not the bottleneck — sample coverage is**, and 
 
 ---
 
-## 5. Phase 0 by-products: two issues in V1
+## 5. Phase 0 by-products: Codec Forensics and Collision Audit
 
 Inversion surfaces problems a forward-only codec structurally cannot detect — nothing in V1's design ever asks whether two tokens collide.
 
