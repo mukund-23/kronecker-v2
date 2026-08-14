@@ -14,11 +14,11 @@ The Kronecker codec **is** invertible — exactly, in closed form, at every prac
 | independent byte slots | 3.0053 | 3.15M | 1× |
 | **autoregressive over slots** | **1.7246** | **1.91M** | **79×** |
 
-Breaking slot independence is worth **1.28 bpb**. Three architecturally distinct *parallel* alternatives recovered **under 1%** of it. No parallel alternative we tested closed the gap, though none were tuned — and the sequential decoding that does work costs 79× latency.
+Breaking slot independence is worth **1.28 bpb**. Three architecturally distinct *parallel* alternatives recovered **under 1%** of it — though none were tuned, so this is not proof that sequential decoding is necessary. The sequential decoding that does work costs 79× latency.
 
 **A vocabulary-independent output layer is achievable, but it is a tradeoff, not a free saving.**
 
-Along the way we found two byte-extraction issues in Kronecker V1 that a forward-only codec cannot self-detect, and showed that `d_p=16` is unsafe for Indic scripts.
+Along the way we found two byte-extraction issues in Kronecker V1 that a forward-only codec cannot self-detect, and produced the per-tokenizer collision count: at the production `pos_dim=32`, Sarvam-1 has **zero truncated tokens but 280 colliding ones** — so the position budget is not the only thing merging token identities.
 
 ---
 
@@ -159,7 +159,7 @@ Before trusting a *learned* decoder we checked what it can do when recovery is k
 
 Held-out recovery saturates at **98.60%** (slope +0.087 pts per 10K extra tokens); fitting on the entire vocabulary transductively reaches 100%.
 
-Two conclusions: **capacity is not the bottleneck — sample coverage is**, and a linear readout inferring the inverse from a vocabulary subset cannot match a decoder handed the true `W`. The residual ~1.4 pts is precisely the independent-slots assumption — byte accuracy was 99.63% while exact was 98.60%, because ~6.4 slots must all be right at once. **This foreshadowed the Phase 1 result.**
+Two conclusions: **capacity is not the bottleneck — sample coverage is**, and a linear readout inferring the inverse from a vocabulary subset cannot match a decoder handed the true `W`. Exact recovery (98.60%) sits below byte accuracy (99.63%) because ~6.4 slots must all be right at once — though independent compounding would predict 97.7%, so the per-slot errors are somewhat clustered rather than independent.
 
 ---
 
@@ -178,28 +178,48 @@ V1 resolves token bytes via `tokenizer.decode([id])`. Many GPT-2 vocabulary entr
 
 The fix maps vocabulary pieces back through GPT-2's canonical byte↔unicode table instead of round-tripping through `decode()`. *(`GPT2TokenizerFast` does not expose `.byte_decoder`; the map must be constructed directly.)*
 
-**255 distinct tokens shared one input vector.** The model could not distinguish them at the input layer at all.
+**The 384 colliding tokens fall into 21 groups. One group contains 255 of them** — every UTF-8 fragment in the vocabulary, collapsed onto the bytes of a single replacement character. Those 255 were indistinguishable at the input layer, and no amount of training could separate them.
+
+**This cause is independent of `d_p`.** `EF BF BD` is three bytes; it is never truncated. The collapse happens identically at `d_p` = 16, 32 or 64. Raising the position budget does not touch it.
 
 ### 5.2 SentencePiece whitespace handling
 
 A different failure on a different tokenizer family. Handling the U+2581 whitespace marker changed **41,452 Sarvam-1 tokens** and removed 12,279 collisions (39.52% → 21.48%). *(1,414 collisions remain unexplained — see Limitations.)*
 
-### 5.3 `d_p=16` is unsafe for Indic scripts
+### 5.3 The collision count at the production setting
 
-Irreducible collision rate under corrected extraction:
+`pos_dim = 32` is the library default and the production setting; `pos_dim = 16`
+appears only in the paper's 124M experiments and the repo's examples. The
+truncation risk at 32 — three UTF-8 bytes per Devanagari character, conjuncts
+costing nine bytes each, silent and permanent collisions — is already documented.
+What was missing was the number. Collision rate under corrected extraction
+*(partial for Sarvam — see 5.2)*:
 
-| d_p | GPT-2 | Sarvam-1 | Sarvam tokens at ceiling |
+| d_p | GPT-2 | Sarvam-1 | Sarvam tokens truncated |
 |---|---|---|---|
 | 8 | 15.06% | 75.46% | 7,299 |
-| **16** | **0.09%** | **21.48%** | **21,255 (31% of vocab)** |
-| 32 | 0.03% | 0.41% | 0 |
+| 16 | 0.09% | 21.48% | 21,255 (31% of vocab) |
+| **32 (production)** | **0.03%** | **0.41%** | **0** |
 | 64 | 0.004% | 0.28% | 0 |
 
-Devanagari is **3 UTF-8 bytes per character**, and Sarvam's mean token length is 11.18 bytes versus GPT-2's 6.37. At `d_p=16`, 31% of the vocabulary is truncated. At `d_p=32` it goes to zero.
+**For Sarvam-1, `pos_dim=32` is sufficient: zero tokens hit the ceiling.** Mean
+token length is 13.00 bytes against a 32-byte budget, and the longest is under it.
+Doubling to 64 — 133M projection parameters at V5's width instead of 66M — buys
+nothing on truncation. The 8 and 16 rows are the sensitivity analysis: the margin
+is real but not large, and halving the budget would cost 31% of the vocabulary.
 
-Additionally, the first two bytes of essentially every Devanagari codepoint are `0xE0 0xA4/0xA5`, so roughly two-thirds of position slots in an Indic token carry near-constant, non-discriminative signal.
+**But zero truncation does not mean zero collisions.** At `d_p=32`, Sarvam-1 has
+**280 colliding tokens and no truncated ones**. Those collisions cannot be a
+position-budget effect. Together with §5.1's 255 fragment tokens — also
+`d_p`-independent — this says the position budget is not the only thing that
+merges token identities, and raising it is not a complete remedy. Diagnosing the
+residual needs a per-script breakdown on the actual V5 vocabulary.
 
-**V1's "truncation affects ≤0.18% of tokens" does not transfer beyond English-centric tokenizers.** For an Indic vocabulary, `d_p=32` is a floor.
+One structural note for Indic budgeting: the first two bytes of essentially every
+Devanagari codepoint are `0xE0 0xA4/0xA5`. Roughly two-thirds of the position
+slots in an Indic token therefore carry near-constant, non-discriminative signal —
+so the *effective* budget is smaller than the nominal one even when nothing is
+truncated.
 
 ---
 
@@ -276,17 +296,17 @@ A 20× parameter saving that costs 79× decode latency is not an unqualified win
 2. **The recovery boundary scales with mean byte length, not codec dimension.** `d_model* = 384` at `d_p ∈ {16, 32, 64}` — `D` quadruples, the boundary is unchanged.
 3. **Trained projections preserve recovery above ~2.7× margin.** Training consumes headroom rather than destroying invertibility. Stable rank converges to ~21 regardless of starting width; condition number does not detect this.
 4. **Kronecker V1's byte extraction has two issues** — UTF-8 fragment collapse on byte-level BPE (255 GPT-2 tokens sharing one embedding) and SentencePiece whitespace mishandling (41,452 Sarvam tokens). Neither is detectable by a forward-only codec.
-5. **`d_p=16` is unsafe for Indic scripts.** 21.48% Sarvam collisions vs 0.09% for GPT-2; 31% of the Sarvam vocabulary truncated. `d_p=32` resolves it.
+5. **At the production setting `d_p=32`, Sarvam-1 has zero truncated tokens — but 280 colliding ones.** The position budget is sufficient for this vocabulary and doubling it to 64 buys nothing on truncation. Collisions nonetheless persist, so **truncation is not the only mechanism that merges token identities**, and raising `d_p` is not a complete remedy. Both `d_p`-independent causes we identified come from byte extraction, not the budget.
 6. **Cross-position dependence dominates byte-head quality.** Breaking slot independence is worth 1.28 bpb — the largest effect measured in this work.
 7. **No parallel design we tested recovered more than 1% of that gain.** D1 (slot attention), D2 (low-rank coupling) and D3 (iterative refinement) span three distinct mechanisms and all landed within 0.017 bpb of the independent baseline. **This does not prove sequential decoding is necessary** — none were hyperparameter-tuned, and stronger parallel decoders (diffusion-style, insertion-based) are untested. The product-distribution argument in §6.3 is a *hypothesis* consistent with the result, not a theorem.
 8. **Sequential decoding costs 79× latency versus independent slots.** This is the largest practical obstacle to a byte-level output head — larger, arguably, than the bpb gap, since the parameter saving is worthless if decoding is two orders of magnitude slower.
 
 ### What this means for V2
 
-- Output-side Kronecker is **feasible**. Static invertibility is not the obstacle; it holds comfortably at every practical width.
+- Output-side Kronecker is **feasible**. Static invertibility is not the obstacle; it holds comfortably at every practical width. At V5's implied width (~8,100, from the ~133M projection at `pos_dim=64`), the recovery margin is **21× the boundary** — far above the 2.7× the trained-projection result requires.
 - The binding constraint appears to be **distributional**, not geometric — how the byte distribution factorises, not whether the codec can be inverted.
 - The open engineering problem is **efficient decoding under a non-factorised distribution**. Slot attention, low-rank coupling and iterative refinement did not work in the forms tested; diffusion-style and insertion-based decoders remain the obvious untried candidates.
-- `d_p` should be **script-aware**. A single global value cannot serve both Latin and Indic vocabularies.
+- **`pos_dim=32` holds for Sarvam-1; 64 is not indicated on truncation grounds.** But collisions survive at 32 with nothing truncated, so a per-script collision audit of the actual V5 vocabulary should precede the sizing decision — and it should separate budget effects from extraction effects, because only the first responds to `pos_dim`.
 
 ---
 
@@ -299,9 +319,10 @@ A 20× parameter saving that costs 79× decode latency is not an unqualified win
 | **Length is free** | Arms B–D read the true token's byte length from the target rather than modelling it, so their distributions are not normalised over strings. **This favours the byte heads.** |
 | **Budget asymmetry** | A′ saw ~40B tokens; our heads saw 360K states. Both comparisons are reported; neither alone is the answer. |
 | **Narrow Phase 0c corpus** | TinyShakespeare (338K tokens) against a 50K vocab — many tokens receive little gradient. |
+| **Trained runs used `d_p=16`** | Phase 0c and Phase 1 ran at the paper's 124M setting, not the production `pos_dim=32`. The recovery boundary is `d_p`-independent (§4.3), so the margin law should transfer, but this was not verified at 32. Only the collision analysis (§5) covers the production setting. |
 | **D-arms untuned** | No hyperparameter search. D1 at larger `d_h` is untested. |
 | **Two tokenizer families** | Llama-3.2 is gated on HF. Only byte-level BPE and SentencePiece were examined. |
-| **Sarvam residual** | 1,414 collisions survive the U+2581 fix, cause unidentified. |
+| **Sarvam collisions unexplained** | 1,414 survive the U+2581 fix at `d_p=16`, and 280 survive at `d_p=32` with nothing truncated. Cause unidentified — this is the loose end most worth pulling. |
 | **Latency across sessions** | `ms/10k` varies between runs (arm C measured 12,877 and 44,002 in different sessions). Only within-session ratios are used. |
 
 ---
@@ -317,7 +338,7 @@ python phase0/00_sanity.py              # z-norm inversion works
 python phase0/02_vocab_sweep.py         # full GPT-2 vocab recovery
 python phase0/03_injectivity.py         # collision detection
 python phase0/04_surface.py             # recovery boundary vs d_p, d_model
-python phase0/05_collision_forensics.py # V1 extraction defects
+python phase0/05_collision_forensics.py # V1 extraction issues, collision counts
 python phase0/06_trained_w.py           # trained-W recovery (zero margin)
 python phase0/07_margin_decoder.py      # the margin law
 python phase0/08_readout_capacity.py    # decoder calibration
@@ -339,5 +360,7 @@ All results in `results/*.json`. Phase 0 runs on CPU except 06–08; Phase 1 nee
 1. Three seeds per arm — currently the weakest methodological point
 2. End-to-end training with a byte head, rather than frozen states (the 250M-token FineWeb-Edu shards are already prepared)
 3. Explicit length/EOS modelling so the byte-head distribution is properly normalised
-4. A third tokenizer family (Llama-3.2, pending HF access)
-5. A parallel non-factorised decoder — the open problem §7 identifies
+4. Identify the non-truncation collision cause: 280 Sarvam tokens collide at `pos_dim=32` with nothing truncated, and the mechanism is unknown. It does not respond to the position budget, so it needs its own fix.
+5. Re-run Phase 0c and Phase 1 at `pos_dim=32` to confirm the margin law transfers off the 124M setting
+6. A third tokenizer family (Llama-3.2, pending HF access)
+7. A parallel non-factorised decoder — the open problem §7 identifies
