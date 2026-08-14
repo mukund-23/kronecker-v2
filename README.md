@@ -430,28 +430,28 @@ All results in `results/*.json`. Phase 0 runs on CPU except 06–08; Phase 1 nee
 
 6. ### Invertibility-aware training
 
-§4.6 showed that a trained projection preserves recovery only above ~2.7×
-margin, because nothing in the language-modelling objective rewards keeping
-tokens recoverable — recovery is a property of the random initialisation that
-training spends. An auxiliary term could make it something training defends:
-L = L_LM + λ · L_inv
-`L_inv` should be **byte-level reconstruction cross-entropy** — the loss of
-decoding the input embedding back to its own bytes — rather than an ℓ2
-reconstruction of κ. §4.5 found that codec-space residual doesn't compound the
-way per-slot independence predicts, so the byte-level objective is the one
-aligned with the metric that actually matters.
-
-Two things this would test, neither of which is settled:
-
-- Whether it **lowers the 2.7× sizing requirement**, letting narrower models
-  stay invertible.
-- What λ **costs in LM quality**. The tradeoff curve is the result, not a
-  foregone win: an objective that forces byte recoverability may constrain the
-  representation in ways next-token prediction would rather avoid.
-
-It also connects the two halves of this work — Phase 0's margin law and Phase
-1's output head — since a model trained to keep its inputs recoverable is
-plausibly a model whose hidden states decode more easily.
+   §4.6 showed that a trained projection preserves recovery only above ~2.7×
+   margin, because nothing in the language-modelling objective rewards keeping
+   tokens recoverable — recovery is a property of the random initialisation that
+   training spends. An auxiliary term could make it something training defends:
+   L = L_LM + λ · L_inv
+   `L_inv` should be **byte-level reconstruction cross-entropy** — the loss of
+   decoding the input embedding back to its own bytes — rather than an ℓ2
+   reconstruction of κ. §4.5 found that codec-space residual doesn't compound the
+   way per-slot independence predicts, so the byte-level objective is the one
+   aligned with the metric that actually matters.
+   
+   Two things this would test, neither of which is settled:
+   
+   - Whether it **lowers the 2.7× sizing requirement**, letting narrower models
+     stay invertible.
+   - What λ **costs in LM quality**. The tradeoff curve is the result, not a
+     foregone win: an objective that forces byte recoverability may constrain the
+     representation in ways next-token prediction would rather avoid.
+   
+   It also connects the two halves of this work — Phase 0's margin law and Phase
+   1's output head — since a model trained to keep its inputs recoverable is
+   plausibly a model whose hidden states decode more easily.
 
 
 7. A third tokenizer family (Llama-3.2, pending HF access)
