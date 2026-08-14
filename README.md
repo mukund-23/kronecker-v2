@@ -102,7 +102,72 @@ Two structural facts make the inversion cheap:
 
 This answers the objection that z-norm makes inversion intractable: it reduces to arithmetic.
 
-### 4.2 Recovery on the full vocabulary
+### 4.2 The recovery algorithm
+
+Given a `d_model`-dimensional vector — a static token embedding in Phase 0,
+a contextual hidden state in Phase 1 — recover the token's bytes:
+
+1. **Start from the projected representation** `e ∈ ℝ^d_model`.
+
+2. **Map back to code space** with the least-squares decoder `W⁺`
+   (Moore–Penrose pseudoinverse), giving `κ̂ = e·W⁺ ∈ ℝ^D`, `D = 256·d_p`.
+
+   `W` is `D × d_model` with `D ≫ d_model`, so it has **no inverse**. `W⁺` is
+   the minimum-norm least-squares solution, not `W⁻¹`. The transpose `Wᵀ` is a
+   cheaper adjoint approximation — used only in the interactive demo, where
+   inverting a 4096×768 matrix in the browser isn't practical, and verified to
+   track `W⁺` closely. All reported results use `W⁺`.
+
+3. **Split into position blocks.** Reshape `κ̂` to `[256, d_p]`: one block of
+   256 byte scores per position slot.
+
+4. **Argmax within each block** to recover the most likely byte at that slot.
+
+5. **Recover the length `L`**, which is not known a priori. Per §4.1 the argmax
+   is invariant to the affine z-norm correction, so the decoded *bytes* don't
+   depend on `L` — only how many slots to keep. For each candidate `L = 1…d_p`,
+   truncate to `L` bytes, re-encode through the forward codec, and score cosine
+   against the observed `e`. Take the best-scoring candidate.
+
+6. **Score against ground truth** on three metrics:
+   - **byte accuracy** — fraction of slots with the correct byte (partial credit)
+   - **length accuracy** — fraction of tokens with `L̂ = L`
+   - **exact recovery** — every byte *and* the length correct (no partial credit)
+
+   These are not interchangeable. Exact recovery falls off roughly as
+   `byte_acc^L̄`, so at `L̄ ≈ 6.4` a 92% byte accuracy is only ~53% exact. When
+   the three diverge, the pattern localises the failure: §4.4's collapse held
+   length accuracy above 99.5% throughout, so the damage was to byte identity,
+   not segmentation.
+
+### 4.3 The decoder ladder
+
+Step 2's least-squares decoder is a baseline, not the only option. Four
+alternatives were tested across Phase 0 and Phase 1; the results are reported
+in full in §4.5 and §6.3 and collected here for comparison.
+
+| decoder | where | result |
+|---|---|---|
+| least-squares `W⁺` | baseline, §4.2–4.4 | 100% exact at `d_model ≥ 768` (random `W`); 99.6% at 2.7× margin (trained `W`) |
+| learned linear readout | §4.5, scripts 08–09 | saturates at **98.60%** held-out; sample coverage is the limit, not capacity |
+| per-position classifiers | §6.3, arm B | **3.0053 bpb** — independent slots fail badly on contextual states |
+| non-autoregressive refinement | §6.3, arms D1–D3 | recovers **<1%** of the autoregressive gain |
+| autoregressive over slots | §6.3, arm C | **1.7246 bpb**, at 79× decode latency |
+
+**Untried, and the natural next candidates:**
+
+- **Structured sparse optimisation** (OMP, LASSO) exploiting the exactly-one-
+  active-byte-per-slot structure, rather than treating recovery as unstructured
+  least squares.
+- **Beam search over valid byte sequences**, constraining the decode to strings
+  the tokenizer can actually produce — this trades the unbounded-vocabulary
+  property for accuracy, so the exchange rate is the experiment.
+- **Diffusion or insertion-based decoders**, the leading candidates for escaping
+  a product distribution without paying `d_p` sequential passes (§7, finding 7).
+
+These are proposals. No results are claimed for them.
+
+### 4.4 Recovery on the full vocabulary
 
 All 50,257 GPT-2 tokens, random Gaussian `W`:
 
@@ -115,7 +180,7 @@ All 50,257 GPT-2 tokens, random Gaussian `W`:
 
 Uniform across every length bucket L=1…16 — no weak sub-population.
 
-### 4.3 The recovery boundary scales with byte length, not codec size
+### 4.5 The recovery boundary scales with byte length, not codec size
 
 Sweeping `d_p × d_model` and taking the smallest `d_model` reaching ≥99% exact:
 
@@ -129,9 +194,9 @@ Sweeping `d_p × d_model` and taking the smallest `d_model` reaching ≥99% exac
 
 **Why it matters:** the scale claim can be made from analysis rather than from production-scale training. Production (`d_p=32, d_model=4096`) sits **10.7× above** the boundary.
 
-### 4.4 Trained projections need ~2.7× margin
+### 4.6 Trained projections need ~2.7× margin
 
-§4.3 used a *random* `W`. Gradient descent carries no such guarantee. Training small models at three widths for 2,000 steps:
+§4.5 used a *random* `W`. Gradient descent carries no such guarantee. Training small models at three widths for 2,000 steps:
 
 | d_model | margin | recovery @0 | recovery @2000 | stable rank @0 → @2000 |
 |---|---|---|---|---|
@@ -147,7 +212,7 @@ Two results here:
 
 **Sizing rule: `d_model ≥ 2.7 × d_model*` ≈ 1037.** Every production model is far above this.
 
-### 4.5 Decoder calibration (a negative control)
+### 4.7 Decoder calibration (a negative control)
 
 Before trusting a *learned* decoder we checked what it can do when recovery is known-perfect (random `W`):
 
@@ -319,7 +384,7 @@ A 20× parameter saving that costs 79× decode latency is not an unqualified win
 | **Length is free** | Arms B–D read the true token's byte length from the target rather than modelling it, so their distributions are not normalised over strings. **This favours the byte heads.** |
 | **Budget asymmetry** | A′ saw ~40B tokens; our heads saw 360K states. Both comparisons are reported; neither alone is the answer. |
 | **Narrow Phase 0c corpus** | TinyShakespeare (338K tokens) against a 50K vocab — many tokens receive little gradient. |
-| **Trained runs used `d_p=16`** | Phase 0c and Phase 1 ran at the paper's 124M setting, not the production `pos_dim=32`. The recovery boundary is `d_p`-independent (§4.3), so the margin law should transfer, but this was not verified at 32. Only the collision analysis (§5) covers the production setting. |
+| **Trained runs used `d_p=16`** | Phase 0c and Phase 1 ran at the paper's 124M setting, not the production `pos_dim=32`. The recovery boundary is `d_p`-independent (§4.5), so the margin law should transfer, but this was not verified at 32. Only the collision analysis (§5) covers the production setting. |
 | **D-arms untuned** | No hyperparameter search. D1 at larger `d_h` is untested. |
 | **Two tokenizer families** | Llama-3.2 is gated on HF. Only byte-level BPE and SentencePiece were examined. |
 | **Sarvam collisions unexplained** | 1,414 survive the U+2581 fix at `d_p=16`, and 280 survive at `d_p=32` with nothing truncated. Cause unidentified — this is the loose end most worth pulling. |
@@ -362,5 +427,32 @@ All results in `results/*.json`. Phase 0 runs on CPU except 06–08; Phase 1 nee
 3. Explicit length/EOS modelling so the byte-head distribution is properly normalised
 4. Identify the non-truncation collision cause: 280 Sarvam tokens collide at `pos_dim=32` with nothing truncated, and the mechanism is unknown. It does not respond to the position budget, so it needs its own fix.
 5. Re-run Phase 0c and Phase 1 at `pos_dim=32` to confirm the margin law transfers off the 124M setting
-6. A third tokenizer family (Llama-3.2, pending HF access)
-7. A parallel non-factorised decoder — the open problem §7 identifies
+
+6. ### Invertibility-aware training
+
+§4.6 showed that a trained projection preserves recovery only above ~2.7×
+margin, because nothing in the language-modelling objective rewards keeping
+tokens recoverable — recovery is a property of the random initialisation that
+training spends. An auxiliary term could make it something training defends:
+L = L_LM + λ · L_inv
+`L_inv` should be **byte-level reconstruction cross-entropy** — the loss of
+decoding the input embedding back to its own bytes — rather than an ℓ2
+reconstruction of κ. §4.5 found that codec-space residual doesn't compound the
+way per-slot independence predicts, so the byte-level objective is the one
+aligned with the metric that actually matters.
+
+Two things this would test, neither of which is settled:
+
+- Whether it **lowers the 2.7× sizing requirement**, letting narrower models
+  stay invertible.
+- What λ **costs in LM quality**. The tradeoff curve is the result, not a
+  foregone win: an objective that forces byte recoverability may constrain the
+  representation in ways next-token prediction would rather avoid.
+
+It also connects the two halves of this work — Phase 0's margin law and Phase
+1's output head — since a model trained to keep its inputs recoverable is
+plausibly a model whose hidden states decode more easily.
+
+
+7. A third tokenizer family (Llama-3.2, pending HF access)
+8. A parallel non-factorised decoder — the open problem §7 identifies
